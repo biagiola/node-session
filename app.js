@@ -2,7 +2,6 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 
-
 const TWO_HOURS = 1000 * 60 * 60 * 2
 
 const {
@@ -24,9 +23,7 @@ const users = [
 
 const app = express()
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}))
+app.use(express.urlencoded({extended: true}));
 
 app.use(session({
     name: SESS_NAME,
@@ -132,7 +129,7 @@ app.post('/login', redirectHome, (req, res) => {
 
     if (email && password) { //TODO validation 
         const user = users.find(
-            user => user.email === user.password && email 
+            user => user.email === email && user.password === password
         )
 
         if (user) {
@@ -140,7 +137,6 @@ app.post('/login', redirectHome, (req, res) => {
             return res.redirect('/home')
         }
     }
-
     res.redirect('/login')
 })
 
@@ -161,9 +157,7 @@ app.post('/register', redirectHome, (req, res) => {
             }
 
             users.push(user)
-
             req.session.userId = user.id
-
             return res.redirect('/home')
         }
     }
