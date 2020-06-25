@@ -1,29 +1,11 @@
 const express = require('express')
-const bodyParser = require('body-parser')
 const session = require('express-session')
-
-const TWO_HOURS = 1000 * 60 * 60 * 2
-
-const {
-    PORT = 3000, 
-    NODE_ENV = 'development',
-    SESS_NAME = 'sid',
-    SESS_SECRET = '%!1"$!Adlkñj0i452dtg12c',
-    SESS_LIFETIME = TWO_HOURS 
-} = process.env
-
-const IN_PROD = NODE_ENV === 'production'
-
-//TODO DB
-const users = [
-    { id:1, name: 'Alex', email: 'alex@gmail.com', password: 'secret' },
-    { id:2, name: 'Max', email:'max@gmail.com', password: 'secret' },
-    { id:3, name: 'Hagard', email: 'hagard@gmail.com', password: 'secret' }
-]
-
+const users = require('./fakeDatabase')
 const app = express()
 
 app.use(express.urlencoded({extended: true}));
+
+const {PORT, NODE_ENV, SESS_NAME, SESS_SECRET, SESS_LIFETIME}  = require('./sessionConfig')
 
 app.use(session({
     name: SESS_NAME,
@@ -34,7 +16,7 @@ app.use(session({
     cookie: {
         maxAge: SESS_LIFETIME, //maxime time for a session 
         sameSite: true, //stric
-        secure: IN_PROD //in our case, this will be true
+        secure: NODE_ENV //in our case, this will be true
     }
 }))
 
