@@ -3,10 +3,10 @@ const session = require('express-session')
 const users = require('./fakeDatabase')
 const app = express()
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({extended: true})); //bodyparser
 
 const {PORT, NODE_ENV, SESS_NAME, SESS_SECRET, SESS_LIFETIME}  = require('./sessionConfig')
-
+//set node-session 
 app.use(session({
     name: SESS_NAME,
     resave: false, //save even if the session was never modified 
@@ -16,10 +16,11 @@ app.use(session({
     cookie: {
         maxAge: SESS_LIFETIME, //maxime time for a session 
         sameSite: true, //stric
-        secure: NODE_ENV //in our case, this will be true
+        secure: NODE_ENV === 'production' //in our case, this will be true
     }
 }))
 
+//Middlewares
 const redirectLogin = (req, res, next) => {
     if(!req.session.userId) {
         res.redirect('/login')
@@ -27,7 +28,6 @@ const redirectLogin = (req, res, next) => {
         next()
     }
 }
-
 const redirectHome = (req, res, next) => {
     if(req.session.userId) {
         res.redirect('/home')
@@ -46,12 +46,13 @@ app.use((req, res, next) => {
     next()
 })
 
+//Routes
 app.get('/', (req, res) => {
     //console.log(req.session);
 
     //const { userId } = req.session
-
     const userId = 1
+    console.log('/', userId)
 
     res.send(`
         <h1>Welcome!</h1>
@@ -93,19 +94,6 @@ app.get('/login', redirectHome, (req, res) => {
     `)
 })
 
-app.get('/register', redirectHome, (req, res) => {
-    res.send(`
-        <h1>Register</h1>
-        <form method='post' action='/register'>
-            <input name='name' placeholder='Name' require />
-            <input type='email' name='email' placeholder='Email' require />
-            <input type='password' name='password' placeholder='Password' require />
-            <input type='submit' />
-        </form>
-        <a href='/login'>Login</a>
-    `)
-})
-
 app.post('/login', redirectHome, (req, res) => {
     const { email, password } = req.body //we can do this because the bodyParser can access to another request body object 
 
@@ -120,6 +108,30 @@ app.post('/login', redirectHome, (req, res) => {
         }
     }
     res.redirect('/login')
+})
+
+app.post('/logout', redirectLogin, (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.redirect('/home');
+        }
+
+        res.clearCookie(SESS_NAME)
+        res.redirect('/login')
+    })
+})
+
+app.get('/register', redirectHome, (req, res) => {
+    res.send(`
+        <h1>Register</h1>
+        <form method='post' action='/register'>
+            <input name='name' placeholder='Name' require />
+            <input type='email' name='email' placeholder='Email' require />
+            <input type='password' name='password' placeholder='Password' require />
+            <input type='submit' />
+        </form>
+        <a href='/login'>Login</a>
+    `)
 })
 
 app.post('/register', redirectHome, (req, res) => {
@@ -145,17 +157,6 @@ app.post('/register', redirectHome, (req, res) => {
     }
 
     res.redirect('/register') //TODO error message
-})
-
-app.post('/logout', redirectLogin, (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            return res.redirect('/home');
-        }
-
-        res.clearCookie(SESS_NAME)
-        res.redirect('/login')
-    })
 })
 
 app.listen(PORT, () => console.log(
