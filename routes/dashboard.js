@@ -1,12 +1,11 @@
-const express = require('express');
+const express = require('express')
 const app = express()
 const router = express.Router()
 const middlewares  = require('../middlewares/middlewares')
 
-app.use(middlewares.redirectLogin);
-//app.use(middlewares.redirectHome);
+app.use(middlewares.redirectLogin)
 
-router.get('/', middlewares.redirectLogin, function(req, res){
+router.get('/home', middlewares.redirectLogin, function(req, res){
     //console.log(req.session);
     //const { userId } = req.session
     const userId = 1
@@ -15,7 +14,7 @@ router.get('/', middlewares.redirectLogin, function(req, res){
     res.send(`
         <h1>Welcome!</h1>
         ${userId ? `
-            <a href='/Home'>Home</a>
+            <a href='/home'>Home</a>
             <form method='post' action='/logout'>
                 <button>Logout</button>
             </form>

@@ -1,7 +1,11 @@
-const router = require('express').Router()
-const redirects = require('../middlewares')
+const express = require('express');
+const app = express()
+const router = express.Router()
+const middlewares  = require('../middlewares/middlewares')
 
-router.route('/register', redirects.home, (req, res) => {
+app.use(middlewares.redirectHome)
+
+router.get('/', middlewares.redirectHome, (req, res) => {
   res.send(`
       <h1>Register</h1>
       <form method='post' action='/register'>
@@ -14,7 +18,7 @@ router.route('/register', redirects.home, (req, res) => {
   `)
 })
 
-router.route('/register', redirects.home, (req, res) => {
+router.post('/register', middlewares.redirectHome, (req, res) => {
   const { name, email, password } = req.body 
 
   if (name && email && password) { //TODO validation   
@@ -38,3 +42,5 @@ router.route('/register', redirects.home, (req, res) => {
 
   res.redirect('/register') //TODO error message
 })
+
+module.exports = router;
