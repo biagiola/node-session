@@ -1,11 +1,12 @@
 const express = require('express')
 const app = express()
 const router = express.Router()
-const middlewares  = require('../middlewares/middlewares')
+const middlewares  = require('../middlewares')
 
 app.use(middlewares.redirectLogin)
 
-router.get('/home', middlewares.redirectLogin, (req, res) => {
+//app.get('/', redirectLogin, (req, res) => {
+router.get('/', middlewares.redirectLogin, (req, res) => {
     //console.log(req.session);
     //const { userId } = req.session
     const userId = 1
@@ -25,28 +26,7 @@ router.get('/home', middlewares.redirectLogin, (req, res) => {
     `)
   })
 
-/*app.get('/', redirectLogin, (req, res) => {
-  //console.log(req.session);
-
-  //const { userId } = req.session
-  const userId = 1
-  console.log('/', userId)
-
-  res.send(`
-      <h1>Welcome!</h1>
-      ${userId ? `
-          <a href='/Home'>Home</a>
-          <form method='post' action='/logout'>
-              <button>Logout</button>
-          </form>
-          ` : `
-          <a href='/login'>Login</a>    
-          <a href='/register'>Register</a>
-      `}
-  `)
-})*/
-
-/*router.route('/home', (req, res) => {
+router.get('/home', (req, res) => {
   const { user } = res.locals
 
   res.send(`
@@ -58,6 +38,6 @@ router.get('/home', middlewares.redirectLogin, (req, res) => {
       </ul>
   `
   )
-})*/
+})
 
 module.exports = router;

@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const router = require('express').Router()
-const middlewares  = require('../middlewares/middlewares')
+const middlewares  = require('../middlewares')
 
 //app.use(middlewares.redirectLogin)
 
