@@ -5,7 +5,7 @@ const middlewares  = require('../middlewares/middlewares')
 
 app.use(middlewares.redirectLogin)
 
-router.get('/home', middlewares.redirectLogin, function(req, res){
+router.get('/home', middlewares.redirectLogin, (req, res) => {
     //console.log(req.session);
     //const { userId } = req.session
     const userId = 1

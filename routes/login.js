@@ -6,7 +6,7 @@ const users = require('../fakeDatabase');
 
 app.use(middlewares.redirectHome);
 
-router.get('/', middlewares.redirectHome, function(req, res) {
+router.get('/', middlewares.redirectHome, (req, res) => {
   res.send(`
       <h1>Login</h1>
       <form method='post' action='/login'>
@@ -18,7 +18,7 @@ router.get('/', middlewares.redirectHome, function(req, res) {
   `)
 })
 
-router.post('/', middlewares.redirectHome, function(req, res) {
+router.post('/', middlewares.redirectHome, (req, res) => {
   const { email, password } = req.body //we can do this because the bodyParser can access to another request body object 
 
   if (email && password) { //TODO validation 

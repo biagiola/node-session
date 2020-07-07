@@ -5,7 +5,7 @@ const middlewares  = require('../middlewares/middlewares')
 
 //app.use(middlewares.redirectLogin)
 
-router.post('/', function(req, res) {
+router.post('/', (req, res) => {
   console.log(req.session, 'logout.js')
   req.session.destroy(err => {
       if (err) {

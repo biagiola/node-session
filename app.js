@@ -35,11 +35,11 @@ app.use((req, res, next) => {
 const dashboard = require('./routes/dashboard')
 const login = require('./routes/login')
 const logout = require('./routes/logout')
-//const register = require('./routes/register')
+const register = require('./routes/register')
 app.use('/',dashboard)
 app.use('/login', login)
 app.use('/logout', logout)
-//app.use('/register', register)
+app.use('/register', register)
 
 app.listen(PORT, () => console.log(
     `http://localhost:${PORT}`  
