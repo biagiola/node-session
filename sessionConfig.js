@@ -5,6 +5,6 @@ const obj = {
   NODE_ENV: process.env.NODE_ENV,
   SESS_NAME: process.env.SEE_NAME,
   SESS_SECRET: process.env.SESS_SECRET,
-  SESS_LIFETIME: process.env.SESS_LIFETIME
+  SESS_LIFETIME: 1000 * 60 * 60 * 2 
 }
 module.exports = obj
